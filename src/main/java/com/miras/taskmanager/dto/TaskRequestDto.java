@@ -1,6 +1,7 @@
 package com.miras.taskmanager.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -12,4 +13,7 @@ public class TaskRequestDto {
 
     @Size(max = 500, message = "Описание не должно превышать 500 символов")
     private String description;
+
+    @NotNull(message = "ID пользователя обязателен для заполнения")
+    private Long userId; // <-- Новое поле
 }

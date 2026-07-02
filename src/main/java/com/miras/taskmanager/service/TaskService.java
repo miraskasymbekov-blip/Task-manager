@@ -2,8 +2,10 @@ package com.miras.taskmanager.service; // твой путь к пакету
 
 import com.miras.taskmanager.entity.Task;
 import com.miras.taskmanager.entity.TaskStatus;
+import com.miras.taskmanager.entity.User;
+import com.miras.taskmanager.exception.ResourceNotFoundException;
 import com.miras.taskmanager.repository.TaskRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.miras.taskmanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +18,16 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Transactional // Тут транзакция нужна, так как идет запись в БД
-    public Task createTask(Task task) {
+    public Task createTask(Task task, Long userId) {
         if (task.getTitle() == null || task.getTitle().isBlank()) {
             throw new IllegalArgumentException("Название задачи не может быть пустым");
         }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Пользователь с id " + userId + " не найден"));
+        task.setUser(user);
         return taskRepository.save(task);
     }
 
@@ -31,7 +37,7 @@ public class TaskService {
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Задача с id " + id + " не найдена"));
+                .orElseThrow(() -> new ResourceNotFoundException("Задача с id " + id + " не найдена"));
     }
 
     @Transactional
@@ -44,7 +50,7 @@ public class TaskService {
     @Transactional
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new EntityNotFoundException("Невозможно удалить: задача с id " + id + " не найдена");
+            throw new ResourceNotFoundException("Невозможно удалить: задача с id " + id + " не найдена");
         }
         taskRepository.deleteById(id);
     }

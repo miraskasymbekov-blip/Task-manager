@@ -1,5 +1,7 @@
-package com.miras.taskmanager.controller; // твой пакет
+package com.miras.taskmanager.controller;
 
+import com.miras.taskmanager.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,5 +26,14 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleResourceNotFound(ResourceNotFoundException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
