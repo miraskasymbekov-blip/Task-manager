@@ -1,0 +1,13 @@
+### 1. Создание новой задачи
+POST http://localhost:8888/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Изучить бэкенд до косточек",
+  "description": "Разобраться с архитектурой слоев, DTO и HTTP-статусами"
+}
+
+###
+
+### 2. Получение списка всех задач
+GET http://localhost:8888/api/tasks
