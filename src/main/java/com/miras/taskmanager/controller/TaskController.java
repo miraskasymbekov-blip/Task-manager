@@ -5,6 +5,7 @@ import com.miras.taskmanager.dto.TaskResponseDto;
 import com.miras.taskmanager.entity.Task;
 import com.miras.taskmanager.entity.TaskStatus;
 import com.miras.taskmanager.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // Реальный продакшн: при успешном создании возвращаем статус 201 Created
-    public TaskResponseDto createTask(@RequestBody TaskRequestDto requestDto) {
+    public TaskResponseDto createTask(@Valid @RequestBody TaskRequestDto requestDto) {
         Task task = new Task();
         task.setTitle(requestDto.getTitle());
         task.setDescription(requestDto.getDescription());
