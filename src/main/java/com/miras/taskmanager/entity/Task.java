@@ -32,6 +32,8 @@ public class Task {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime deadline;
+
 
     @PrePersist
     protected void onCreate() {

@@ -3,6 +3,7 @@ package com.miras.taskmanager.controller;
 import com.miras.taskmanager.dto.TaskResponseDto;
 import com.miras.taskmanager.dto.UserRequestDto;
 import com.miras.taskmanager.dto.UserResponseDto;
+import com.miras.taskmanager.entity.TaskStatus;
 import com.miras.taskmanager.entity.User;
 import com.miras.taskmanager.service.TaskService;
 import com.miras.taskmanager.service.UserService;
@@ -45,9 +46,11 @@ public class UserController {
         return UserResponseDto.fromEntity(user);
     }
 
+    // Внутри UserController возвращаем легкий эндпоинт:
     @GetMapping("/{userId}/tasks")
-    public List<TaskResponseDto> getUserTasks(@PathVariable Long userId) {
-        return taskService.getTasksByUserId(userId).stream()
+    public List<TaskResponseDto> getUserTasks(@PathVariable Long userId,
+                                              @RequestParam(required = false) TaskStatus status) {
+        return taskService.getTasksByUserId(userId, status).stream()
                 .map(TaskResponseDto::fromEntity)
                 .toList();
     }

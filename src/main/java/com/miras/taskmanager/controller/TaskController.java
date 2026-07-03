@@ -25,6 +25,7 @@ public class TaskController {
         Task task = new Task();
         task.setTitle(requestDto.getTitle());
         task.setDescription(requestDto.getDescription());
+        task.setDeadline(requestDto.getDeadline());
 
         Task createdTask = taskService.createTask(task, requestDto.getUserId());
         return TaskResponseDto.fromEntity(createdTask);

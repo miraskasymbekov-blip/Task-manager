@@ -58,8 +58,31 @@ Content-Type: application/json
 ### 8. Получение всех пользователей
 GET http://localhost:8888/api/users
 
-### Получить все задачи Дамира (у которого id = 1)
+### Получить все задачи Мираса (у которого id = 1)
 GET http://localhost:8888/api/users/1/tasks
 
 ### Попытка получить задачи фантомного юзера (вернет красивую 404)
 GET http://localhost:8888/api/users/9999/tasks
+
+### Создание задачи с привязкой юзера и дедлайна
+POST http://localhost:8888/api/tasks
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "Сдать отчет по практике",
+  "description": "Подписать дневник у ментора в LCOM",
+  "deadline": "2026-07-10T18:00:00"
+}
+
+### удаление
+DELETE http://localhost:8888/api/tasks/1
+
+### Сценарий 1: Запрашиваем вообще все задачи юзера (статус не передан)
+GET http://localhost:8888/api/users/1/tasks
+
+### Сценарий 2: Фильтруем и забираем ТОЛЬКО те задачи, которые уже сделаны
+GET http://localhost:8888/api/users/1/tasks?status=DONE
+
+### Сценарий 3: Проверяем защиту от дурака (должна вернуться 400 ошибка от Спринга)
+GET http://localhost:8888/api/users/1/tasks?status=INVALID_STATUS_STRING

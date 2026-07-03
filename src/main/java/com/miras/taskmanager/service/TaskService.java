@@ -55,11 +55,15 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public List<Task> getTasksByUserId(Long userId) {
-        // Перед поиском задач проверим, существует ли вообще такой юзер в базе
+    // Внутри TaskService меняем метод на простой вариант:
+    public List<Task> getTasksByUserId(Long userId, TaskStatus status) {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("Пользователь с id " + userId + " не найден");
         }
-        return taskRepository.findByUserId(userId);
+        if (status == null) {
+            return taskRepository.findByUserId(userId);
+        }
+        // Никаких pageable, просто забираем все таски юзера
+        return taskRepository.findByUserIdAndStatus(userId, status);
     }
 }

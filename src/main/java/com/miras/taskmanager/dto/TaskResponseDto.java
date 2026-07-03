@@ -14,6 +14,8 @@ public class TaskResponseDto {
     private String description;
     private TaskStatus status;
     private LocalDateTime createdAt;
+    private LocalDateTime deadline;
+    private UserResponseDto user;
 
     // Крутой инженерный трюк: статический фабричный метод для конвертации из Entity в DTO
     public static TaskResponseDto fromEntity(Task task) {
@@ -22,7 +24,10 @@ public class TaskResponseDto {
                 task.getTitle(),
                 task.getDescription(),
                 task.getStatus(),
-                task.getCreatedAt()
+                task.getCreatedAt(),
+                task.getDeadline(),
+                task.getUser() != null ? UserResponseDto.fromEntity(task.getUser()) : null
+
         );
     }
 }

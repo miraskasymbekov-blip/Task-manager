@@ -1,9 +1,12 @@
 package com.miras.taskmanager.dto;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class TaskRequestDto {
@@ -16,4 +19,7 @@ public class TaskRequestDto {
 
     @NotNull(message = "ID пользователя обязателен для заполнения")
     private Long userId; // <-- Новое поле
+
+    @FutureOrPresent
+    private LocalDateTime deadline;
 }
