@@ -45,3 +45,21 @@ Content-Type: application/json
   "description": "Разделение на ManyToOne и OneToMany",
   "userId": 1
 }
+
+### 7. Создание нового пользователя
+POST http://localhost:8888/api/users
+Content-Type: application/json
+
+{
+  "username": "damir",
+  "email": "damir@example.com"
+}
+
+### 8. Получение всех пользователей
+GET http://localhost:8888/api/users
+
+### Получить все задачи Дамира (у которого id = 1)
+GET http://localhost:8888/api/users/1/tasks
+
+### Попытка получить задачи фантомного юзера (вернет красивую 404)
+GET http://localhost:8888/api/users/9999/tasks

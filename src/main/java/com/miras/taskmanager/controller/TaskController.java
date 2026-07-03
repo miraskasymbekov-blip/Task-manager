@@ -30,12 +30,6 @@ public class TaskController {
         return TaskResponseDto.fromEntity(createdTask);
     }
 
-    @GetMapping
-    public List<TaskResponseDto> getAllTasks() {
-        return taskService.getAllTasks().stream()
-                .map(TaskResponseDto::fromEntity) // Переводим каждую сущность из списка в DTO
-                .toList();
-    }
 
     @GetMapping("/{id}")
     public TaskResponseDto getTaskById(@PathVariable Long id) {

@@ -54,4 +54,12 @@ public class TaskService {
         }
         taskRepository.deleteById(id);
     }
+
+    public List<Task> getTasksByUserId(Long userId) {
+        // Перед поиском задач проверим, существует ли вообще такой юзер в базе
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Пользователь с id " + userId + " не найден");
+        }
+        return taskRepository.findByUserId(userId);
+    }
 }
