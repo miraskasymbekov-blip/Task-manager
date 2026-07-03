@@ -7,6 +7,7 @@ import com.miras.taskmanager.exception.ResourceNotFoundException;
 import com.miras.taskmanager.repository.TaskRepository;
 import com.miras.taskmanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,14 +57,25 @@ public class TaskService {
     }
 
     // Внутри TaskService меняем метод на простой вариант:
-    public List<Task> getTasksByUserId(Long userId, TaskStatus status) {
+    public List<Task> getTasksByUserId(Long userId, TaskStatus status, String sortBy, String direction) {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("Пользователь с id " + userId + " не найден");
         }
+
+        String validatedSortBy = switch (sortBy != null ? sortBy : "") {
+            case "deadline", "id" -> sortBy;
+            default -> "createdAt"; // Если пришел мусор или null — сортируем по дате создания
+        };
+        Sort.Direction validatedDirection = "ASC".equalsIgnoreCase(direction)
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Sort sort = Sort.by(validatedDirection, validatedSortBy);
+
         if (status == null) {
-            return taskRepository.findByUserId(userId);
+            return taskRepository.findByUserId(userId, sort);
         }
-        // Никаких pageable, просто забираем все таски юзера
-        return taskRepository.findByUserIdAndStatus(userId, status);
+
+        return taskRepository.findByUserIdAndStatus(userId, status, sort);
     }
 }

@@ -86,3 +86,12 @@ GET http://localhost:8888/api/users/1/tasks?status=DONE
 
 ### Сценарий 3: Проверяем защиту от дурака (должна вернуться 400 ошибка от Спринга)
 GET http://localhost:8888/api/users/1/tasks?status=INVALID_STATUS_STRING
+
+### 1. Сортировка по дедлайну (сначала самые срочные)
+GET http://localhost:8888/api/users/1/tasks?sortBy=deadline&direction=ASC
+
+### 2. Комбинация: Фильтр по статусу + Сортировка по дедлайну
+GET http://localhost:8888/api/users/1/tasks?status=IN_PROGRESS&sortBy=deadline&direction=ASC
+
+### 3. Проверка безопасности (мусорное поле должно сброситься на createdAt DESC)
+GET http://localhost:8888/api/users/1/tasks?sortBy=subaru_impreza&direction=HELLO

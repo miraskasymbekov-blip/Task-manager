@@ -49,8 +49,10 @@ public class UserController {
     // Внутри UserController возвращаем легкий эндпоинт:
     @GetMapping("/{userId}/tasks")
     public List<TaskResponseDto> getUserTasks(@PathVariable Long userId,
-                                              @RequestParam(required = false) TaskStatus status) {
-        return taskService.getTasksByUserId(userId, status).stream()
+                                              @RequestParam(required = false) TaskStatus status,
+                                              @RequestParam(defaultValue = "createdAt") String sortBy,
+                                              @RequestParam(defaultValue = "DESC") String direction) {
+        return taskService.getTasksByUserId(userId, status, sortBy, direction).stream()
                 .map(TaskResponseDto::fromEntity)
                 .toList();
     }
