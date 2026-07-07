@@ -1,6 +1,7 @@
 package com.miras.taskmanager.controller;
 
 import com.miras.taskmanager.dto.TaskResponseDto;
+import com.miras.taskmanager.dto.TaskStatsProjection;
 import com.miras.taskmanager.dto.UserRequestDto;
 import com.miras.taskmanager.dto.UserResponseDto;
 import com.miras.taskmanager.entity.TaskStatus;
@@ -55,5 +56,10 @@ public class UserController {
         return taskService.getTasksByUserId(userId, status, sortBy, direction).stream()
                 .map(TaskResponseDto::fromEntity)
                 .toList();
+    }
+
+    @GetMapping("/{userId}/tasks/stats")
+    public TaskStatsProjection getUserTasksStats(@PathVariable Long userId) {
+        return taskService.getTaskStatsByUserId(userId);
     }
 }

@@ -1,5 +1,6 @@
 package com.miras.taskmanager.service; // твой путь к пакету
 
+import com.miras.taskmanager.dto.TaskStatsProjection;
 import com.miras.taskmanager.entity.Task;
 import com.miras.taskmanager.entity.TaskStatus;
 import com.miras.taskmanager.entity.User;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -77,5 +79,14 @@ public class TaskService {
         }
 
         return taskRepository.findByUserIdAndStatus(userId, status, sort);
+    }
+
+    public TaskStatsProjection getTaskStatsByUserId(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Пользователь с id " + userId + " не найден");
+        }
+
+        // Передаем ID юзера и текущую точку во времени
+        return taskRepository.getTaskStats(userId, LocalDateTime.now());
     }
 }

@@ -95,3 +95,6 @@ GET http://localhost:8888/api/users/1/tasks?status=IN_PROGRESS&sortBy=deadline&d
 
 ### 3. Проверка безопасности (мусорное поле должно сброситься на createdAt DESC)
 GET http://localhost:8888/api/users/1/tasks?sortBy=subaru_impreza&direction=HELLO
+
+###
+GET http://localhost:8888/api/users/1/tasks/stats
